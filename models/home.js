@@ -13,7 +13,10 @@ module.exports = class Home {
         this.price = price
         this.rating = rating
         this.imageURL = imageURL
+        this.homeID = Home.homeCount++
     }
+
+    static homeCount = 0
 
     save() {
         Home.getAllHomes((registeredHomes) => {
@@ -44,5 +47,17 @@ module.exports = class Home {
             }
         })
         // return registeredHomes
+    }
+
+    // again taking callback to handle async file reading
+    static findHome(homeID, callback){
+        Home.getAllHomes((registeredHomes)=>{
+            registeredHomes.forEach(home => {
+                if(home.homeID == homeID){
+                    callback(home)
+                    // return home
+                }
+            });
+        })
     }
 }

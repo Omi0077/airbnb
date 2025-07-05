@@ -1,9 +1,9 @@
-<%- include('partials/head') %>
+<%- include('../partials/head') %>
   </head>
 
   <body class="bg-white min-h-screen text-neutral-800 font-sans">
 
-    <%- include('partials/nav') %>
+    <%- include('../partials/nav') %>
 
       <div class="px-4 py-6">
         <header class="text-center mb-8">
@@ -17,7 +17,7 @@
             <% registeredHomes.forEach((home)=> { %>
               <li
                 class="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition duration-300 border border-gray-200">
-                <a href="#" class="block">
+                <a href="/home-detail/<%= home.homeID %>" class="block">
                   <!-- Image Placeholder -->
                   <div class="h-48 bg-gray-200 flex items-center justify-center text-gray-500 text-sm bg-cover bg-center bg-[url(https://i.pinimg.com/originals/4c/78/4f/4c784f33a7e20b7260407b9975b982d0.jpg)]">
                     <!-- <img class="h-48 w-full" src="<%= 'https://i.pinimg.com/originals/4c/78/4f/4c784f33a7e20b7260407b9975b982d0.jpg' %>"> -->

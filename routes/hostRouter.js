@@ -7,11 +7,13 @@ const hostRouter = express.Router();
 
 //local module
 const rootDir    = require('../utils/pathUtil')
-const homeController = require('../controllers/homesController')
+const hostController = require('../controllers/hostController')
 
 
-hostRouter.get("/add-home", homeController.getAddHome);
-hostRouter.post("/add-home", homeController.postAddHome);
+hostRouter.get("/add-home", hostController.getAddHome);
+hostRouter.post("/add-home", hostController.postAddHome);
+hostRouter.get("/home-list", hostController.getHostHomeList);
+hostRouter.get("/edit-home", hostController.getEditHome);
 
 // hostRouter.use(express.static(path.join(rootDir, 'public')))
 // not needed
