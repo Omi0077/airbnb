@@ -50,4 +50,11 @@ module.exports = class Favourite {
             }
         })
     }
+
+    static deleteFavourite(homeIDToBeDeleted, callback){
+        Favourite.getFavourites((favouriteHomes)=>{
+            favouriteHomes = favouriteHomes.filter(home => home.homeID != homeIDToBeDeleted)
+            fs.writeFile(filePath, JSON.stringify(favouriteHomes), callback)
+        })
+    }
 }

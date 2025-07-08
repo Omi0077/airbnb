@@ -50,3 +50,9 @@ exports.postEditHome = (req, res, next) => {
     res.redirect("/host/home-list");
   });
 };
+
+exports.postDeleteHome = (req, res, next)=>{
+    Home.deleteHome(req.params.homeID, ()=>{
+        res.redirect("/host/home-list");
+    })
+}

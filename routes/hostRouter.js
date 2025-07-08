@@ -15,6 +15,7 @@ hostRouter.post("/add-home", hostController.postAddHome);
 hostRouter.get("/home-list", hostController.getHostHomeList);
 hostRouter.get("/edit-home/:homeID", hostController.getEditHome);
 hostRouter.post("/edit-home", hostController.postEditHome);
+hostRouter.post("/delete-home/:homeID", hostController.postDeleteHome);
 
 // hostRouter.use(express.static(path.join(rootDir, 'public')))
 // not needed

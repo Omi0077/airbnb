@@ -4,6 +4,7 @@ const path = require('path')
 
 // local modules
 const rootDir = require('../utils/pathUtil')
+const Favourite = require('./favourites')
 
 const filePath = path.join(rootDir, 'data', 'homes.json')
 
@@ -69,5 +70,22 @@ module.exports = class Home {
         // console.log(registeredHomes);
         fs.writeFile(filePath, JSON.stringify(registeredHomes), callback)
        })
+    }
+
+    static deleteHome(homeIDToDelete, callback){
+        Home.getAllHomes((registeredHomes)=>{
+            const index = registeredHomes.findIndex(home => home.homeID === Number(homeIDToDelete))
+            if(index !== -1){
+                registeredHomes.splice(index,1)
+            }
+            fs.writeFile(filePath, JSON.stringify(registeredHomes), err =>{
+                if(err){
+                    console.log('error writing file',err);
+                }
+                else{
+                    Favourite.deleteFavourite(homeIDToDelete, callback)
+                }
+            })
+        })
     }
 }

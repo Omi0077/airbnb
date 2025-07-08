@@ -28,7 +28,8 @@ exports.getFavPage = (req, res, next) => {
         //         favHomeList.push(homeObj)
         //     })
         // });
-        const favHomeList = await Promise.all(favHomes.map(async (home) => {
+       try {
+             const favHomeList = await Promise.all(favHomes.map(async (home) => {
             return new Promise((resolve, reject) => {
                 Home.findHome(home.homeID, (homeObj) => {
                     if (homeObj) resolve(homeObj);
@@ -39,6 +40,10 @@ exports.getFavPage = (req, res, next) => {
         }))
         // console.log(favHomeList, 'lol');
         res.render('store/favList', { favHomeList: favHomeList, pageTitle: 'Favourites', currPage: 'favList' })
+
+       } catch (error) {
+            console.log(error);
+       }
     })
 }
 
@@ -67,4 +72,10 @@ exports.postFavPage = (req, res, next) => {
     const favHome = new Favourite(favHomeID)
     favHome.addFavourite()
     res.redirect('/favourites')
+}
+
+exports.postDeleteFromFav = (req, res, next)=>{
+    Favourite.deleteFavourite(req.params.homeID, ()=>{
+        res.redirect('/favourites')
+    })
 }

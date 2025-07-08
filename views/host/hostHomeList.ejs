@@ -57,8 +57,8 @@
                           Edit
                         </button>
                       </form>
-                      <form action="/host/delete-home" method="POST" onsubmit="return confirm('Are you sure?');">
-                        <button
+                      <form action="/host/delete-home/<%= home.homeID %>" method="POST">
+                        <button type="submit"
                           class="bg-red-500 hover:bg-red-600 text-white text-sm font-semibold py-1 px-3 rounded shadow">
                           Delete
                         </button>

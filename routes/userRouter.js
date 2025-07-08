@@ -15,6 +15,7 @@ userRouter.get("/favourites", userController.getFavPage);
 userRouter.get("/list", userController.getListPage);
 userRouter.get("/home-detail/:homeID", userController.getHomeDetailPage);
 userRouter.post("/favourites", userController.postFavPage);
+userRouter.post("/favourites/delete/:homeID", userController.postDeleteFromFav);
 
 
 // userRouter.use(express.static(path.join(rootDir, 'public')))
