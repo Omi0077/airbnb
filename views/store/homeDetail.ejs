@@ -1,10 +1,37 @@
 <%- include('../partials/head') %>
-    </head>
+</head>
 
-    <body class="bg-white min-h-screen text-neutral-800 font-sans">
+<body class="bg-white min-h-screen text-neutral-800 font-sans">
 
-        <%- include('../partials/nav') %>
+  <%- include('../partials/nav') %>
 
-        <h2><%= home.homeName %></h2>
-   
-    </body>
+  <main class="max-w-5xl mx-auto px-4 py-8">
+
+    <!-- Home Title -->
+    <h2 class="text-3xl font-bold text-indigo-700 mb-4"><%= home.homeName %></h2>
+
+    <!-- Image Banner -->
+    <div class="rounded-xl overflow-hidden shadow-lg mb-6">
+      <img src="<%= home.imageURL %>" alt="Home Image" class="w-full h-100 object-cover">
+    </div>
+
+    <!-- Location + Description -->
+    <p class="text-gray-600 text-sm mb-2">Location: <%= home.location %></p>
+
+    <p class="text-gray-700 leading-relaxed mb-6">
+      <!-- <%= home.description %> -->
+       home descriptin here
+    </p>
+
+    <!-- Price and Action -->
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+      <p class="text-2xl font-bold text-green-600">₹<%= home.price %> / night</p>
+      <a href="#" class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium px-6 py-2 rounded-full shadow-md transition">
+        Book Now
+      </a>
+      <%- include('../partials/addFavourites') %>
+    </div>
+
+  </main>
+
+</body>

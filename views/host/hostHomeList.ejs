@@ -20,8 +20,8 @@
                 <!-- Entire card no longer wrapped in <a> -->
                 <!-- Image -->
                 <div
-                  class="h-48 bg-gray-200 flex items-center justify-center text-gray-500 text-sm bg-cover bg-center bg-[url('https://i.pinimg.com/originals/4c/78/4f/4c784f33a7e20b7260407b9975b982d0.jpg')]">
-                  <!-- Placeholder or <img> tag -->
+                  class="h-48 bg-gray-200 flex items-center justify-center text-gray-500 text-sm bg-cover bg-center rounded-xl"
+                  style="background-image: url('<%= home.imageURL %>');">
                 </div>
 
                 <!-- Content -->
@@ -51,14 +51,13 @@
                     <span class="text-base font-medium text-gray-800">₹<%= home.price || '999' %>/night</span>
 
                     <div class="flex gap-2">
-                      <form action="/host/edit-home" method="GET">
+                      <form action="/host/edit-home/<%= home.homeID %>" method="GET">
                         <button
                           class="bg-blue-500 hover:bg-blue-600 text-white text-sm font-semibold py-1 px-3 rounded shadow">
                           Edit
                         </button>
                       </form>
-                      <form action="/host/delete-home" method="POST"
-                        onsubmit="return confirm('Are you sure?');">
+                      <form action="/host/delete-home" method="POST" onsubmit="return confirm('Are you sure?');">
                         <button
                           class="bg-red-500 hover:bg-red-600 text-white text-sm font-semibold py-1 px-3 rounded shadow">
                           Delete

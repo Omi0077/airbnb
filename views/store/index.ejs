@@ -17,10 +17,11 @@
             <% registeredHomes.forEach((home)=> { %>
               <li
                 class="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition duration-300 border border-gray-200">
-                <a href="/home-detail/<%= home.homeID %>" class="block">
+                <a href="#" class="block">
                   <!-- Image Placeholder -->
-                  <div class="h-48 bg-gray-200 flex items-center justify-center text-gray-500 text-sm bg-cover bg-center bg-[url(https://i.pinimg.com/originals/4c/78/4f/4c784f33a7e20b7260407b9975b982d0.jpg)]">
-                    <!-- <img class="h-48 w-full" src="<%= 'https://i.pinimg.com/originals/4c/78/4f/4c784f33a7e20b7260407b9975b982d0.jpg' %>"> -->
+                  <div
+                    class="h-48 bg-gray-200 flex items-center justify-center text-gray-500 text-sm bg-cover bg-center rounded-xl"
+                    style="background-image: url('<%= home.imageURL %>');">
                   </div>
 
                   <!-- Content -->
@@ -50,6 +51,7 @@
                         class="bg-[#FF385C] hover:bg-[#e0304e] text-white text-sm font-semibold py-1 px-4 rounded shadow">
                         Book
                       </button>
+                      <a href="/home-detail/<%= home.homeID %>">details</a>
                     </div>
                   </div>
                 </a>

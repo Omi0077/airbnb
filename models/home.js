@@ -5,6 +5,7 @@ const path = require('path')
 // local modules
 const rootDir = require('../utils/pathUtil')
 
+const filePath = path.join(rootDir, 'data', 'homes.json')
 
 module.exports = class Home {
     constructor(homeName, location, price, rating, imageURL) {
@@ -13,15 +14,14 @@ module.exports = class Home {
         this.price = price
         this.rating = rating
         this.imageURL = imageURL
-        this.homeID = Home.homeCount++
+        this.homeID = Math.random()
     }
 
-    static homeCount = 0
+    static homeCount = 0  // this gets reset to 0 every time server restarts
 
     save() {
         Home.getAllHomes((registeredHomes) => {
             registeredHomes.push(this)
-            const filePath = path.join(rootDir, 'data', 'homes.json')
             fs.writeFile(filePath, JSON.stringify(registeredHomes), err => {
                 console.log(err);
             })
@@ -30,7 +30,6 @@ module.exports = class Home {
 
     // to hndle async problem instead of returning this func takes a callback and executes it with data from file
     static getAllHomes(callback) {
-        const filePath = path.join(rootDir, 'data', 'homes.json')
         fs.readFile(filePath, 'utf-8', (err, content) => {
             if (err) {
                 console.error('Error reading homes.json:', err.message);
@@ -52,12 +51,23 @@ module.exports = class Home {
     // again taking callback to handle async file reading
     static findHome(homeID, callback){
         Home.getAllHomes((registeredHomes)=>{
-            registeredHomes.forEach(home => {
-                if(home.homeID == homeID){
-                    callback(home)
-                    // return home
-                }
-            });
+            // registeredHomes.forEach(home => {
+            //     if(home.homeID == homeID){
+            //         callback(home)
+            //         // return home
+            //     }
+            // });
+            const homeFound = registeredHomes.find(home => home.homeID === Number(homeID))
+            callback(homeFound)
         })
+    }
+
+    static updateHome(newHome, callback){
+       Home.getAllHomes((registeredHomes)=>{
+        const homeToBeEdited = registeredHomes.find(home => home.homeID === Number(newHome.homeID))
+        Object.assign(homeToBeEdited, newHome)
+        // console.log(registeredHomes);
+        fs.writeFile(filePath, JSON.stringify(registeredHomes), callback)
+       })
     }
 }

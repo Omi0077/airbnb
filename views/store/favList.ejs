@@ -14,14 +14,16 @@
           <h2 class="text-xl font-semibold mb-4 text-gray-800">Registered Homes</h2>
 
           <ul class="space-y-4 text-left">
-            <% registeredHomes.forEach((home)=> { %>
+            <% favHomeList.forEach((home)=> { %>
               <li
                 class="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition duration-300 border border-gray-200">
-                <a href="/home-detail/<%= home.homeID %>" class="block">
+                <a href="#" class="block">
                   <!-- Image Placeholder -->
-                  <div class="h-48 bg-gray-200 flex items-center justify-center text-gray-500 text-sm bg-cover bg-center bg-[url(https://i.pinimg.com/originals/4c/78/4f/4c784f33a7e20b7260407b9975b982d0.jpg)]">
-                    <!-- <img class="h-48 w-full" src="<%= 'https://i.pinimg.com/originals/4c/78/4f/4c784f33a7e20b7260407b9975b982d0.jpg' %>"> -->
+                  <div
+                    class="h-48 bg-gray-200 flex items-center justify-center text-gray-500 text-sm bg-cover bg-center rounded-xl"
+                    style="background-image: url('<%= home.imageURL %>');">
                   </div>
+
 
                   <!-- Content -->
                   <div class="p-4 flex flex-col gap-2">
@@ -30,7 +32,8 @@
                       <%= home.homeName %>
                     </h3>
                     <!-- Location -->
-                    <p class="text-sm text-gray-500">Location: <%= home.location %> </p>
+                    <p class="text-sm text-gray-500">Location: <%= home.location %>
+                    </p>
 
                     <!-- Rating -->
                     <div class="flex items-center gap-1 text-yellow-400 text-sm">
@@ -50,6 +53,7 @@
                         class="bg-[#FF385C] hover:bg-[#e0304e] text-white text-sm font-semibold py-1 px-4 rounded shadow">
                         Book
                       </button>
+                      <a href="/home-detail/<%= home.homeID %>">details</a>
                     </div>
                   </div>
                 </a>

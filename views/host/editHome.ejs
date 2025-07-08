@@ -11,38 +11,39 @@
 
         <main class="bg-white shadow-md rounded-lg p-6 w-full max-w-md">
             <form action="/host/edit-home" method="post" class="flex flex-col gap-4">
+                <input type="hidden" name="homeID" value="<%= home.homeID %>">
                 <input 
                     type="text" 
                     name="homeName" 
-                    placeholder="Enter home name"
+                    value="<%= home.homeName %>"
                     class="border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#FF385C]"
                 >
 
                 <input 
                     type="text" 
                     name="location" 
-                    placeholder="Enter home location"
+                    value="<%= home.location %>"
                     class="border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#FF385C]"
                 >
 
                 <input 
                     type="text" 
                     name="price" 
-                    placeholder="Enter home price"
+                    value="<%= home.price %>"
                     class="border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#FF385C]"
                 >
 
                 <input 
                     type="text" 
                     name="rating" 
-                    placeholder="Enter home Rating"
+                    value="<%= home.rating %>"
                     class="border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#FF385C]"
                 >
 
                 <input 
                     type="text" 
                     name="imageURL" 
-                    placeholder="Enter home Image URL"
+                    value="<%= home.imageURL %>"
                     class="border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#FF385C]"
                 >
 
