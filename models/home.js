@@ -1,91 +1,56 @@
-//core modules
-const fs = require('fs')
-const path = require('path')
-
 // local modules
-const rootDir = require('../utils/pathUtil')
-const Favourite = require('./favourites')
-
-const filePath = path.join(rootDir, 'data', 'homes.json')
+const { ObjectId } = require("mongodb");
+const { getDB } = require("../utils/dataBaseUtil");
+const Favourite = require("./favourites");
 
 module.exports = class Home {
-    constructor(homeName, location, price, rating, imageURL) {
-        this.homeName = homeName
-        this.location = location
-        this.price = price
-        this.rating = rating
-        this.imageURL = imageURL
-        this.homeID = Math.random()
-    }
+  constructor(houseName, price, location, rating, imageURL, description) {
+    this.houseName = houseName;
+    this.price = price;
+    this.location = location;
+    this.rating = rating;
+    this.imageURL = imageURL;
+    this.description = description;
+  }
 
-    static homeCount = 0  // this gets reset to 0 every time server restarts
+  save() {
+    const db = getDB();
+    return db.collection("homes").insertOne(this);
+  }
 
-    save() {
-        Home.getAllHomes((registeredHomes) => {
-            registeredHomes.push(this)
-            fs.writeFile(filePath, JSON.stringify(registeredHomes), err => {
-                console.log(err);
-            })
-        })
-    }
+  static getAllHomes() {
+    const db = getDB();
+    // .find returns a cursor, an iterator over result set
+    return db.collection("homes").find().toArray();
+  }
 
-    // to hndle async problem instead of returning this func takes a callback and executes it with data from file
-    static getAllHomes(callback) {
-        fs.readFile(filePath, 'utf-8', (err, content) => {
-            if (err) {
-                console.error('Error reading homes.json:', err.message);
-                return callback([]);
-            }
+  static findHome(id) {
+    const db = getDB();
+    // need to call next to get the obj
+    return db
+      .collection("homes")
+      .find({ _id: new ObjectId(String(id)) })
+      .next();
+  }
 
-            try {
-                // If file is empty or only whitespace, fallback to []
-                const homes = content.trim() === "" ? [] : JSON.parse(content);
-                callback(homes);
-            } catch (parseErr) {
-                console.error('Error parsing homes.json:', parseErr.message);
-                callback([]);
-            }
-        })
-        // return registeredHomes
-    }
+  static updateHome(newHome) {
+    const db = getDB();
 
-    // again taking callback to handle async file reading
-    static findHome(homeID, callback){
-        Home.getAllHomes((registeredHomes)=>{
-            // registeredHomes.forEach(home => {
-            //     if(home.homeID == homeID){
-            //         callback(home)
-            //         // return home
-            //     }
-            // });
-            const homeFound = registeredHomes.find(home => home.homeID === Number(homeID))
-            callback(homeFound)
-        })
-    }
+    // updateOne is trying to change _id too which is immutable
+    const { _id, ...dataToUpdate } = newHome;
 
-    static updateHome(newHome, callback){
-       Home.getAllHomes((registeredHomes)=>{
-        const homeToBeEdited = registeredHomes.find(home => home.homeID === Number(newHome.homeID))
-        Object.assign(homeToBeEdited, newHome)
-        // console.log(registeredHomes);
-        fs.writeFile(filePath, JSON.stringify(registeredHomes), callback)
-       })
-    }
+    return db
+      .collection("homes")
+      .updateOne({ _id: new ObjectId(String(_id)) }, { $set: dataToUpdate });
+  }
 
-    static deleteHome(homeIDToDelete, callback){
-        Home.getAllHomes((registeredHomes)=>{
-            const index = registeredHomes.findIndex(home => home.homeID === Number(homeIDToDelete))
-            if(index !== -1){
-                registeredHomes.splice(index,1)
-            }
-            fs.writeFile(filePath, JSON.stringify(registeredHomes), err =>{
-                if(err){
-                    console.log('error writing file',err);
-                }
-                else{
-                    Favourite.deleteFavourite(homeIDToDelete, callback)
-                }
-            })
-        })
-    }
-}
+  static deleteHome(idToDelete) {
+    const db = getDB();
+    Favourite.deleteFavourite(idToDelete).then((result) => {
+      console.log("fav removed", result);
+    });
+    return db
+      .collection("homes")
+      .deleteOne({ _id: new ObjectId(String(idToDelete)) });
+  }
+};

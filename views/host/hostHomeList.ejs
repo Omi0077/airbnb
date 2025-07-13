@@ -28,7 +28,7 @@
                 <div class="p-4 flex flex-col gap-2">
                   <!-- Title -->
                   <h3 class="text-lg font-semibold text-gray-800">
-                    <%= home.homeName %>
+                    <%= home.houseName %>
                   </h3>
 
                   <!-- Location -->
@@ -51,13 +51,13 @@
                     <span class="text-base font-medium text-gray-800">₹<%= home.price || '999' %>/night</span>
 
                     <div class="flex gap-2">
-                      <form action="/host/edit-home/<%= home.homeID %>" method="GET">
+                      <form action="/host/edit-home/<%= home._id %>" method="GET">
                         <button
                           class="bg-blue-500 hover:bg-blue-600 text-white text-sm font-semibold py-1 px-3 rounded shadow">
                           Edit
                         </button>
                       </form>
-                      <form action="/host/delete-home/<%= home.homeID %>" method="POST">
+                      <form action="/host/delete-home/<%= home._id %>" method="POST">
                         <button type="submit"
                           class="bg-red-500 hover:bg-red-600 text-white text-sm font-semibold py-1 px-3 rounded shadow">
                           Delete

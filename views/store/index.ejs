@@ -28,7 +28,7 @@
                   <div class="p-4 flex flex-col gap-2">
                     <!-- Title -->
                     <h3 class="text-lg font-semibold text-gray-800">
-                      <%= home.homeName %>
+                      <%= home.houseName %>
                     </h3>
                     <!-- Location -->
                     <p class="text-sm text-gray-500">Location: <%= home.location %> </p>
@@ -51,7 +51,7 @@
                         class="bg-[#FF385C] hover:bg-[#e0304e] text-white text-sm font-semibold py-1 px-4 rounded shadow">
                         Book
                       </button>
-                      <a href="/home-detail/<%= home.homeID %>">details</a>
+                      <a href="/home-detail/<%= home._id %>">details</a>
                     </div>
                   </div>
                 </a>

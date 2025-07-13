@@ -1,60 +1,31 @@
-// core modules
-const fs = require('fs')
-const path = require('path')
+//local module
+const { getDB } = require("../utils/dataBaseUtil");
 
-// local modules
-const rootDir = require('../utils/pathUtil')
-// const Home = require('./home')
-
-
-const filePath = path.join(rootDir, 'data', 'favourites.json')
-
-// since jsut storing one data in model next time just use static methods with simple array
 module.exports = class Favourite {
-    constructor(homeID) {
-        this.homeID = homeID
-    }
+  constructor(houseID) {
+    this.houseID = houseID;
+  }
 
-    static getFavourites(callback) {
-        fs.readFile(filePath, 'utf-8', (err, content) => {
-            if (err) {
-                console.log('Error reading file', err);
-                return callback([])
-            }
-            if (content) {
-                try {
-                    const homes = content.trim() === "" ? [] : JSON.parse(content)
-                    callback(homes)
-                } catch (parseErr) {
-                    console.log("error parsing favourites.json", parseErr);
-                    callback([])
-                }
-            }
-        })
-    }
+  static getFavourites() {
+    const db = getDB();
+    return db.collection("favourites").find().toArray();
+  }
 
-    addFavourite() {
-        Favourite.getFavourites((favHomes) => {
-            let isFav = false
-            favHomes.forEach(home => {
-                if (home.homeID === this.homeID) {
-                    console.log('it already favourite');
-                    isFav = true
-                }
-            });
-            if (!isFav) {
-                favHomes.push(this)
-                fs.writeFile(filePath, JSON.stringify(favHomes), err => {
-                    console.log(err);
-                })
-            }
-        })
-    }
+  save() {
+    const db = getDB();
+    return db.collection("favourites")
+      .findOne({ houseID: this.houseID })
+      .then((existingFav) => {
+        if (!existingFav) {
+          return db.collection("favourites").insertOne(this);
+        } else {
+          return Promise.reject('already fav')
+        }
+      })
+  }
 
-    static deleteFavourite(homeIDToBeDeleted, callback){
-        Favourite.getFavourites((favouriteHomes)=>{
-            favouriteHomes = favouriteHomes.filter(home => home.homeID != homeIDToBeDeleted)
-            fs.writeFile(filePath, JSON.stringify(favouriteHomes), callback)
-        })
-    }
-}
+  static deleteFavourite(idToBeDeleted) {
+    const db = getDB();
+    return db.collection("favourites").deleteOne({ houseID: idToBeDeleted });
+  }
+};
