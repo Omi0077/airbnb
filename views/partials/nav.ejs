@@ -3,18 +3,50 @@
     <span class="text-2xl font-bold text-[#FF385C]">airbnb</span>
 
     <div class="flex gap-x-6 items-center">
-      <a href="/" class="text-base font-medium text-gray-500 <%= currPage == 'homePage' ? 'text-red-400' : 'hover:text-black' %> transition duration-200">
+      <a href="/"
+        class="text-base font-medium text-gray-500 <%= currPage == 'homePage' ? 'text-red-400' : 'hover:text-black' %> transition duration-200">
         Home
       </a>
-      <a href="/bookings" class="text-base font-medium text-gray-500 <%= currPage == 'bookings' ? 'text-red-400' : 'hover:text-black' %> transition duration-200">
-        Bookings
-      </a>
-      <a href="/favourites" class="text-base font-medium text-gray-500 <%= currPage == 'favList' ? 'text-red-400' : 'hover:text-black' %> transition duration-200">
-        Favourites
-      </a>
-      <a href="/list" class="text-base font-medium text-gray-500 <%= currPage == 'homeList' ? 'text-red-400' : 'hover:text-black' %> transition duration-200">
-        List
-      </a>
+      <% if(isLoggedIn){ %>
+        <% if(user && user !== "undefined" && user.userType==="guest" ){ %>
+          <a href="/bookings"
+            class="text-base font-medium text-gray-500 <%= currPage == 'bookings' ? 'text-red-400' : 'hover:text-black' %> transition duration-200">
+            Bookings
+          </a>
+          <a href="/favourites"
+            class="text-base font-medium text-gray-500 <%= currPage == 'favList' ? 'text-red-400' : 'hover:text-black' %> transition duration-200">
+            Favourites
+          </a>
+          <a href="/list"
+            class="text-base font-medium text-gray-500 <%= currPage == 'homeList' ? 'text-red-400' : 'hover:text-black' %> transition duration-200">
+            List
+          </a>
+          <% }else if(user && user !== "undefined" && user.userType==="host" ){ %>
+            <a href="/host/add-home"
+              class="text-base font-medium text-gray-500 <%= currPage == 'addHomePage' ? 'text-red-400' : 'hover:text-black' %> transition duration-200">
+              Add Home
+            </a>
+            <a href="/host/home-list"
+              class="text-base font-medium text-gray-500 <%= currPage == 'hostHomeList' ? 'text-red-400' : 'hover:text-black' %> transition duration-200">
+              Host Home List
+            </a>
+            <%}%>
+              <%}%>
     </div>
+    <%if(!isLoggedIn){%>
+      <a href="/login"
+        class="text-base font-medium text-gray-500 <%= currPage == 'logIn' ? 'text-red-400' : 'hover:text-black' %> transition duration-200">
+        Log-In
+      </a>
+      <a href="/signup"
+        class="text-base font-medium text-gray-500 <%= currPage == 'signup' ? 'text-red-400' : 'hover:text-black' %> transition duration-200">
+        Sign-Up
+      </a>
+      <%}else{%>
+        <form action="/logout" method="post">
+          <button type="submit"
+            class="text-base font-medium text-gray-500 hover:text-black transition duration-200">Log-Out</button>
+        </form>
+        <%}%>
   </div>
 </nav>

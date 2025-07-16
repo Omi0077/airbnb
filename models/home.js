@@ -1,56 +1,26 @@
 // local modules
-const { ObjectId } = require("mongodb");
-const { getDB } = require("../utils/dataBaseUtil");
-const Favourite = require("./favourites");
+const mongoose = require("mongoose");
 
-module.exports = class Home {
-  constructor(houseName, price, location, rating, imageURL, description) {
-    this.houseName = houseName;
-    this.price = price;
-    this.location = location;
-    this.rating = rating;
-    this.imageURL = imageURL;
-    this.description = description;
-  }
+const houseSchema = new mongoose.Schema({
+  houseName: { type: String, required: true },
+  price: { type: Number, required: true },
+  location: { type: String, required: true },
+  rating: { type: Number, required: true },
+  imageURL: String,
+  description: String,
+});
 
-  save() {
-    const db = getDB();
-    return db.collection("homes").insertOne(this);
-  }
+["findOneAndDelete", "findByIdAndDelete"].forEach((method) => {
+  houseSchema.pre(method, async function (next) {
+    const houseID = this.getQuery()["_id"];
 
-  static getAllHomes() {
-    const db = getDB();
-    // .find returns a cursor, an iterator over result set
-    return db.collection("homes").find().toArray();
-  }
+    await mongoose.model("User").updateMany({favourites: houseID},
+      {$pull:{favourites: houseID}}
+    )
 
-  static findHome(id) {
-    const db = getDB();
-    // need to call next to get the obj
-    return db
-      .collection("homes")
-      .find({ _id: new ObjectId(String(id)) })
-      .next();
-  }
+    // await Favourite.deleteMany({ houseID });
+    // next(); next isnt needed in async function
+  });
+});
 
-  static updateHome(newHome) {
-    const db = getDB();
-
-    // updateOne is trying to change _id too which is immutable
-    const { _id, ...dataToUpdate } = newHome;
-
-    return db
-      .collection("homes")
-      .updateOne({ _id: new ObjectId(String(_id)) }, { $set: dataToUpdate });
-  }
-
-  static deleteHome(idToDelete) {
-    const db = getDB();
-    Favourite.deleteFavourite(idToDelete).then((result) => {
-      console.log("fav removed", result);
-    });
-    return db
-      .collection("homes")
-      .deleteOne({ _id: new ObjectId(String(idToDelete)) });
-  }
-};
+module.exports = mongoose.model("House", houseSchema);
